@@ -25,3 +25,22 @@ def r_total(k_val, h, theta):
     phase = np.exp(2j*kz1*h)
 
     return (r01 + r12*phase) / (1 + r01*r12*phase)
+
+def r_map(n_vals, h_vals, n1, n2, k0, theta):
+
+    N, H = np.meshgrid(n_vals, h_vals)
+
+    k1 = k0 * N
+
+    kx = k0 * n1 * np.sin(theta)
+
+    kz0 = _kz_count(k0*n1, kx)
+    kz1 = _kz_count(k1, kx)
+    kz2 = _kz_count(k0*n2, kx)
+
+    r01 = (kz0-kz1)/(kz0+kz1)
+    r12 = (kz1-kz2)/(kz1+kz2)
+
+    phase = np.exp(2j*kz1*H)
+
+    return (r01+r12*phase)/(1+r01*r12*phase)
